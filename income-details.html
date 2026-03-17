@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Income Details - RapidTrust Loans</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f7fa;
+padding:20px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:15px;
+color:#003366;
+}
+
+.progress-text{
+text-align:center;
+font-size:14px;
+margin-bottom:10px;
+color:#555;
+}
+
+.progress-bar{
+width:100%;
+height:8px;
+background:#ddd;
+border-radius:20px;
+margin-bottom:20px;
+overflow:hidden;
+}
+
+.progress-fill{
+width:40%;
+height:100%;
+background:#007bff;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:bold;
+}
+
+input,select{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+}
+
+.button-group{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+button{
+flex:1;
+padding:14px;
+border:none;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.back-btn{
+background:#6c757d;
+color:white;
+}
+
+.next-btn{
+background:#007bff;
+color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Income Details</h2>
+
+<div class="progress-text">2 of 5</div>
+
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
+
+<form id="incomeForm">
+
+<label>Employment Type</label>
+<select id="employmentType" required>
+<option value="">Select</option>
+<option>Permanent</option>
+<option>Contract</option>
+<option>Self-employed</option>
+<option>Unemployed</option>
+</select>
+
+<label>Monthly Income</label>
+<input type="number" id="monthlyIncome" required placeholder="Enter monthly income">
+
+<label>Payday</label>
+<select id="payday" required>
+<option value="">Select Payday</option>
+<option>15th</option>
+<option>20th</option>
+<option>25th</option>
+<option>30th</option>
+<option>31st</option>
+</select>
+
+<label>Monthly Expenses</label>
+<input type="number" id="expenses" required placeholder="Enter monthly expenses">
+
+<div class="button-group">
+<button type="button" class="back-btn" onclick="window.location.href='personal-details.html'">Back</button>
+<button type="submit" class="next-btn">Next</button>
+</div>
+
+</form>
+
+</div>
+
+<script>
+document.getElementById("incomeForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+const applicant = JSON.parse(localStorage.getItem("loanApplicant")) || {};
+
+applicant.employmentType = document.getElementById("employmentType").value;
+applicant.monthlyIncome = document.getElementById("monthlyIncome").value;
+applicant.payday = document.getElementById("payday").value;
+applicant.expenses = document.getElementById("expenses").value;
+
+localStorage.setItem("loanApplicant", JSON.stringify(applicant));
+
+window.location.href = "loan-request.html";
+});
+</script>
+
+</body>
+</html>

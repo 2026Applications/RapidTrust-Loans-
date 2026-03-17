@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Check Application Status - RapidTrust Loans</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .status-container {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    text-align: center;
+    width: 100%;
+    max-width: 450px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px);}
+    to { opacity: 1; transform: translateY(0);}
+  }
+
+  h2 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: border 0.3s;
+  }
+  input[type="text"]:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+
+  button {
+    background: #007bff;
+    color: #fff;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background: #0056b3;
+  }
+
+  .message {
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 12px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .pending {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+  }
+  .approved {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+  }
+  .rejected {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+  .error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+  }
+</style>
+</head>
+<body>
+
+<div class="status-container">
+  <h2>RapidTrust Loans Status Check</h2>
+  <input type="text" id="refNumber" placeholder="Enter your reference number">
+  <button onclick="checkStatus()">Check Status</button>
+  <div class="message" id="statusMessage"></div>
+</div>
+
+<script>
+  // Example applicants database
+  const applicants = {
+    "RT1001": "Pending Review",
+    "RT1002": "Approved",
+    "RT1003": "Rejected",
+    "RT1004": "Pending Review"
+  };
+
+  function checkStatus() {
+    const ref = document.getElementById("refNumber").value.trim();
+    const statusMessage = document.getElementById("statusMessage");
+
+    if(ref === "") {
+      statusMessage.textContent = "Please enter a reference number.";
+      statusMessage.className = "message error";
+      return;
+    }
+
+    const status = applicants[ref];
+    if(status) {
+      statusMessage.textContent = `Application Found – ${status}`;
+      if(status === "Pending Review") statusMessage.className = "message pending";
+      else if(status === "Approved") statusMessage.className = "message approved";
+      else if(status === "Rejected") statusMessage.className = "message rejected";
+    } else {
+      statusMessage.textContent = "Application Not Found – Please check your reference number";
+      statusMessage.className = "message error";
+    }
+  }
+</script>
+
+</body>
+</html>

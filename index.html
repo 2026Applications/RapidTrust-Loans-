@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RapidTrust Loans</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#ffffff;
+    color:#0b1f3a;
+}
+
+header{
+    position:sticky;
+    top:0;
+    width:100%;
+    background:#ffffff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    z-index:1000;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+    color:#0b1f3a;
+}
+
+.menu-btn{
+    font-size:28px;
+    cursor:pointer;
+    color:#00cfd5;
+}
+
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-260px;
+    width:250px;
+    height:100%;
+    background:#ffffff;
+    box-shadow:-2px 0 10px rgba(0,0,0,0.1);
+    padding:30px 20px;
+    transition:0.3s;
+    z-index:1200;
+}
+
+.side-menu.active{
+    right:0;
+}
+
+.side-menu a{
+    display:block;
+    text-decoration:none;
+    color:#0b1f3a;
+    margin:20px 0;
+    font-size:17px;
+    font-weight:500;
+}
+
+.close-btn{
+    font-size:28px;
+    cursor:pointer;
+    text-align:right;
+    color:#00cfd5;
+}
+
+.hero{
+    padding:30px 20px;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:30px;
+    margin-bottom:15px;
+    line-height:1.3;
+}
+
+.hero p{
+    font-size:16px;
+    color:#555;
+    margin-bottom:20px;
+}
+
+.hero img{
+    width:100%;
+    max-width:420px;
+    border-radius:16px;
+    margin-top:20px;
+}
+
+.buttons{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    margin-top:20px;
+}
+
+.buttons a{
+    text-decoration:none;
+    padding:14px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.apply-btn{
+    background:#00cfd5;
+    color:#ffffff;
+}
+
+.status-btn{
+    border:2px solid #00cfd5;
+    color:#00cfd5;
+}
+
+.trust{
+    margin-top:18px;
+    font-size:14px;
+    color:#666;
+    line-height:1.8;
+}
+
+.calculator{
+    background:#f7fafd;
+    margin:30px 15px;
+    padding:25px 20px;
+    border-radius:16px;
+}
+
+.calculator h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.calculator input,
+.calculator select{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.calculator button{
+    width:100%;
+    padding:14px;
+    background:#00cfd5;
+    border:none;
+    color:#fff;
+    font-size:16px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.result{
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+    color:#0b1f3a;
+}
+
+footer{
+    padding:20px;
+    text-align:center;
+    font-size:14px;
+    color:#666;
+}
+
+@media(min-width:768px){
+    .hero{
+        max-width:1000px;
+        margin:auto;
+    }
+
+    .buttons{
+        flex-direction:row;
+        justify-content:center;
+    }
+
+    .buttons a{
+        width:220px;
+    }
+
+    .calculator{
+        max-width:500px;
+        margin:auto;
+        margin-top:30px;
+    }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">RapidTrust Loans</div>
+    <div class="menu-btn" onclick="openMenu()">☰</div>
+</header>
+
+<div class="side-menu" id="sideMenu">
+    <div class="close-btn" onclick="closeMenu()">✕</div>
+    <a href="about.html">About</a>
+    <a href="faq.html">FAQ</a>
+    <a href="terms.html">Terms & Conditions</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+<section class="hero">
+    <h1>Fast Personal Loans Designed for Modern Life</h1>
+    <p>Apply securely online and track your application anytime.</p>
+
+    <div class="buttons">
+        <a href="personal-details.html" class="apply-btn">Apply Now</a>
+        <a href="loan-status.html" class="status-btn">Check Status</a>
+    </div>
+
+    <div class="trust">
+        Secure • Quick Review • Flexible Repayment
+    </div>
+
+    <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=900&q=80" alt="Woman using laptop">
+</section>
+
+<section class="calculator">
+    <h2>Loan Calculator</h2>
+    <input type="number" id="amount" placeholder="Enter loan amount">
+
+    <select id="months">
+        <option value="">Select repayment months</option>
+        <option value="3">3 Months</option>
+        <option value="6">6 Months</option>
+        <option value="12">12 Months</option>
+    </select>
+
+    <button onclick="calculateLoan()">Calculate</button>
+
+    <div class="result" id="result"></div>
+</section>
+
+<footer>
+    RapidTrust Loans © 2026
+</footer>
+
+<script>
+function openMenu(){
+    document.getElementById('sideMenu').classList.add('active');
+}
+
+function closeMenu(){
+    document.getElementById('sideMenu').classList.remove('active');
+}
+
+function calculateLoan(){
+    let amount = document.getElementById('amount').value;
+    let months = document.getElementById('months').value;
+
+    if(amount && months){
+        let interest = 0.27;
+        let total = amount * (1 + interest);
+        let monthly = total / months;
+
+        document.getElementById('result').innerHTML =
+            "Estimated Monthly Payment: R" + monthly.toFixed(2);
+    } else {
+        document.getElementById('result').innerHTML =
+            "Please enter amount and months";
+    }
+}
+</script>
+
+</body>
+</html>

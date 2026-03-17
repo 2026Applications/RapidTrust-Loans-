@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loan Request - RapidTrust Loans</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+
+body{
+background:#f5f7fa;
+padding:20px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:15px;
+color:#003366;
+}
+
+.progress-text{
+text-align:center;
+font-size:14px;
+margin-bottom:10px;
+color:#555;
+}
+
+.progress-bar{
+width:100%;
+height:8px;
+background:#ddd;
+border-radius:20px;
+margin-bottom:20px;
+overflow:hidden;
+}
+
+.progress-fill{
+width:60%;
+height:100%;
+background:#007bff;
+}
+
+.info{
+margin-top:10px;
+padding:10px;
+background:#f1f5ff;
+border-radius:8px;
+font-size:14px;
+color:#003366;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:bold;
+}
+
+input,select{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+}
+
+.result{
+margin-top:15px;
+padding:12px;
+background:#eafaf1;
+border-radius:8px;
+font-weight:bold;
+color:#006400;
+text-align:center;
+}
+
+.button-group{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+button{
+flex:1;
+padding:14px;
+border:none;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.back-btn{
+background:#6c757d;
+color:white;
+}
+
+.next-btn{
+background:#007bff;
+color:white;
+}
+
+/* SUCCESS */
+.success-box{
+display:none;
+text-align:center;
+padding:25px;
+background:#e6f7ff;
+border-radius:12px;
+margin-top:20px;
+}
+
+.success-box h3{
+color:#007bff;
+margin-bottom:10px;
+}
+
+.ref{
+font-size:20px;
+font-weight:bold;
+color:#003366;
+margin:15px 0;
+}
+
+.whatsapp-btn{
+display:block;
+margin-top:20px;
+background:#25D366;
+color:white;
+text-decoration:none;
+padding:15px;
+border-radius:8px;
+font-weight:bold;
+font-size:17px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Loan Request</h2>
+
+<div class="progress-text">3 of 5</div>
+
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
+
+<div class="info">
+We lend from R1 000 to R50 000 subject to affordability.
+</div>
+
+<div class="info" id="recommendation">
+Based on your affordability, recommended maximum is loading...
+</div>
+
+<form id="loanForm">
+
+<label>Loan Amount</label>
+<input type="number" id="loanAmount" min="1000" max="50000" required placeholder="Enter amount">
+
+<label>Repayment Term</label>
+<select id="repaymentPeriod" required>
+<option value="">Select Term</option>
+<option value="6">6 Months</option>
+<option value="12">12 Months</option>
+<option value="24">24 Months</option>
+<option value="36">36 Months</option>
+</select>
+
+<div class="result" id="repaymentResult">
+Estimated Monthly Instalment: R0
+</div>
+
+<div class="button-group">
+<button type="button" class="back-btn" onclick="window.location.href='income-details.html'">Back</button>
+<button type="submit" class="next-btn">Submit</button>
+</div>
+
+</form>
+
+<!-- SUCCESS -->
+<div class="success-box" id="successBox">
+
+<h3>✅ Congratulations! Your RapidTrust loan application was successful.</h3>
+
+<p>Your Reference Number:</p>
+<div class="ref" id="refNumber"></div>
+
+<p>
+To proceed with your application and submit the required documents,
+please tap the WhatsApp button below to chat with our consultant.
+</p>
+
+<a id="whatsappBtn" class="whatsapp-btn" target="_blank">
+Continue on WhatsApp
+</a>
+
+</div>
+
+</div>
+
+<script>
+const applicant = JSON.parse(localStorage.getItem("loanApplicant")) || {};
+
+let income = parseFloat(applicant.monthlyIncome) || 0;
+let expenses = parseFloat(applicant.expenses) || 0;
+
+let disposableIncome = income - expenses;
+let recommendedAmount = disposableIncome * 3;
+
+if(recommendedAmount < 1000){ recommendedAmount = 1000; }
+if(recommendedAmount > 50000){ recommendedAmount = 50000; }
+
+document.getElementById("recommendation").innerText =
+"Based on your affordability, recommended maximum is R" + recommendedAmount.toFixed(2);
+
+const loanAmount = document.getElementById("loanAmount");
+const repaymentPeriod = document.getElementById("repaymentPeriod");
+const repaymentResult = document.getElementById("repaymentResult");
+
+function calculateRepayment(){
+let amount = parseFloat(loanAmount.value) || 0;
+let months = parseInt(repaymentPeriod.value) || 0;
+
+if(months === 0){
+repaymentResult.innerText = "Estimated Monthly Instalment: R0";
+return;
+}
+
+let total = amount + (amount * 0.20);
+let monthly = total / months;
+
+repaymentResult.innerText =
+"Estimated Monthly Instalment: R" + monthly.toFixed(2);
+}
+
+loanAmount.addEventListener("input", calculateRepayment);
+repaymentPeriod.addEventListener("change", calculateRepayment);
+
+document.getElementById("loanForm").addEventListener("submit", function(e){
+e.preventDefault();
+
+let amount = parseFloat(loanAmount.value);
+
+if(amount < 1000 || amount > 50000){
+alert("Enter amount between R1 000 and R50 000");
+return;
+}
+
+applicant.loanAmount = loanAmount.value;
+applicant.repaymentPeriod = repaymentPeriod.value;
+applicant.monthlyRepayment = repaymentResult.innerText;
+applicant.recommendedAmount = recommendedAmount;
+
+localStorage.setItem("loanApplicant", JSON.stringify(applicant));
+
+let ref = "RT-" + Math.floor(100000 + Math.random() * 900000);
+
+document.getElementById("loanForm").style.display = "none";
+document.getElementById("successBox").style.display = "block";
+document.getElementById("refNumber").innerText = ref;
+
+/* ✅ UPDATED WHATSAPP MESSAGE */
+let message =
+"Hello RapidTrust team,%0A%0A" +
+"Full Name & Surname: " + (applicant.fullName || "") + "%0A" +
+"ID Number: " + (applicant.idNumber || "") + "%0A" +
+"Monthly Income: R" + (applicant.monthlyIncome || "0") + "%0A" +
+"Expenses: R" + (applicant.expenses || "0") + "%0A" +
+"Loan Amount Wanted: R" + (applicant.loanAmount || "0") + "%0A%0A" +
+"Reference Number: " + ref + "%0A%0A" +
+"Please assist me with next steps.";
+
+let url =
+"https://api.whatsapp.com/send?phone=27832450223&text=" + message;
+
+document.getElementById("whatsappBtn").href = url;
+
+window.scrollTo(0,0);
+});
+</script>
+
+</body>
+</html>
