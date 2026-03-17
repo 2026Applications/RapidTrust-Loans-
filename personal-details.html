@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Details - RapidTrust Loans</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif;}
+body{background:#f5f7fa;padding:20px;}
+.container{max-width:500px;margin:auto;background:white;padding:25px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:15px;color:#003366;}
+label{display:block;margin-top:15px;margin-bottom:5px;font-weight:bold;}
+input{width:100%;padding:12px;border:1px solid #ccc;border-radius:8px;font-size:16px;}
+button{margin-top:20px;width:100%;padding:14px;border:none;font-size:16px;border-radius:8px;background:#007bff;color:white;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Personal Details</h2>
+
+<form id="personalForm">
+<label>Full Names</label>
+<input type="text" id="fullName" placeholder="Enter your full names" required>
+
+<label>Surname</label>
+<input type="text" id="surname" placeholder="Enter your surname" required>
+
+<label>ID Number</label>
+<input type="text" id="idNumber" placeholder="Enter your ID number" required>
+
+<label>Contact Number</label>
+<input type="text" id="contactNumber" placeholder="Enter your contact number" required>
+
+<label>Email Address</label>
+<input type="email" id="email" placeholder="Enter your email address" required>
+
+<button type="submit">Next</button>
+</form>
+</div>
+
+<script>
+const personalForm = document.getElementById("personalForm");
+
+personalForm.addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const fullName = document.getElementById("fullName").value.trim();
+    const surname = document.getElementById("surname").value.trim();
+    const idNumber = document.getElementById("idNumber").value.trim();
+    const contactNumber = document.getElementById("contactNumber").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if(!fullName || !surname || !idNumber || !contactNumber || !email){
+        alert("Please fill in all fields.");
+        return;
+    }
+
+    // Merge with existing loanApplicant data if any
+    const existingApplicant = JSON.parse(localStorage.getItem("loanApplicant")) || {};
+
+    const applicant = {
+        ...existingApplicant,
+        fullName,
+        surname,
+        idNumber,
+        contactNumber,
+        email
+    };
+
+    localStorage.setItem("loanApplicant", JSON.stringify(applicant));
+
+    // Go to loan request page
+    window.location.href = "loan-request.html";
+});
+</script>
+
+</body>
+</html>
