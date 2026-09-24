@@ -1,140 +1,1178 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Check Application Status - RapidTrust Loans</title>
+
+<title>Check Loan Status - RapidTrust Loans</title>
+
 <style>
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
 
-  .status-container {
-    background: #fff;
-    padding: 40px 30px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    text-align: center;
-    width: 100%;
-    max-width: 450px;
-    animation: fadeIn 1s ease-in-out;
-  }
+*{
+box-sizing:border-box;
+}
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px);}
-    to { opacity: 1; transform: translateY(0);}
-  }
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f4f7fb;
+color:#222;
+}
 
-  h2 {
-    color: #333;
-    margin-bottom: 25px;
-    font-size: 24px;
-  }
+/* HEADER */
 
-  input[type="text"] {
-    width: 100%;
-    padding: 14px;
-    border: 2px solid #ccc;
-    border-radius: 12px;
-    font-size: 16px;
-    margin-bottom: 20px;
-    transition: border 0.3s;
-  }
-  input[type="text"]:focus {
-    border-color: #007bff;
-    outline: none;
-  }
+header{
+background:white;
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:100;
+}
 
-  button {
-    background: #007bff;
-    color: #fff;
-    padding: 14px 28px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s;
-  }
-  button:hover {
-    background: #0056b3;
-  }
+.logo{
+color:#003366;
+font-size:20px;
+font-weight:bold;
+}
 
-  .message {
-    margin-top: 25px;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 12px;
-    border-radius: 12px;
-    animation: fadeIn 1s ease-in-out;
-  }
+.menu-btn{
+font-size:26px;
+color:#003366;
+cursor:pointer;
+}
 
-  .pending {
-    color: #856404;
-    background-color: #fff3cd;
-    border: 1px solid #ffeeba;
-  }
-  .approved {
-    color: #155724;
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-  }
-  .rejected {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-  }
-  .error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
-  }
+/* SIDE MENU */
+
+.side-menu{
+position:fixed;
+top:0;
+right:-280px;
+width:280px;
+height:100%;
+background:white;
+box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+transition:0.3s;
+z-index:200;
+padding-top:70px;
+}
+
+.side-menu.active{
+right:0;
+}
+
+.side-menu a{
+display:block;
+padding:16px 25px;
+text-decoration:none;
+color:#003366;
+border-bottom:1px solid #eee;
+}
+
+.close-btn{
+position:absolute;
+top:20px;
+right:20px;
+font-size:28px;
+color:#003366;
+cursor:pointer;
+}
+
+/* MAIN */
+
+.container{
+max-width:500px;
+margin:35px auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
+
+h1{
+color:#003366;
+text-align:center;
+margin-top:0;
+}
+
+.intro{
+text-align:center;
+color:#555;
+line-height:1.5;
+margin-bottom:25px;
+}
+
+/* FORM */
+
+label{
+display:block;
+font-weight:bold;
+margin-bottom:7px;
+}
+
+input{
+width:100%;
+padding:14px;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:16px;
+margin-bottom:15px;
+text-transform:uppercase;
+}
+
+input:focus{
+outline:none;
+border-color:#003366;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:6px;
+background:#003366;
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+background:#00264d;
+}
+
+/* RESULT */
+
+.result{
+display:none;
+margin-top:25px;
+}
+
+/* STATUS BOX */
+
+.status-box{
+padding:18px;
+border-radius:8px;
+text-align:center;
+margin-bottom:20px;
+font-size:18px;
+font-weight:bold;
+}
+
+.pending{
+background:#fff4d6;
+color:#8a6200;
+}
+
+.review{
+background:#e6f0ff;
+color:#1455a0;
+}
+
+.approved{
+background:#e5f8ec;
+color:#16733a;
+}
+
+.rejected{
+background:#ffe8e8;
+color:#a00000;
+}
+
+/* APPLICATION DETAILS */
+
+.details{
+border:1px solid #ddd;
+border-radius:8px;
+overflow:hidden;
+margin-bottom:20px;
+}
+
+.detail-row{
+display:flex;
+justify-content:space-between;
+gap:15px;
+padding:13px;
+border-bottom:1px solid #eee;
+}
+
+.detail-row:last-child{
+border-bottom:none;
+}
+
+.detail-label{
+font-weight:bold;
+color:#555;
+}
+
+.detail-value{
+text-align:right;
+}
+
+/* MESSAGE */
+
+.message{
+padding:15px;
+background:#f5f7fa;
+border-radius:7px;
+line-height:1.5;
+margin-bottom:20px;
+}
+
+/* BANKING BUTTON */
+
+.bank-btn{
+display:block;
+width:100%;
+padding:14px;
+background:#00a86b;
+color:white;
+text-align:center;
+text-decoration:none;
+border-radius:6px;
+font-weight:bold;
+margin-top:15px;
+}
+
+.bank-btn:hover{
+background:#008957;
+}
+
+/* ERROR */
+
+.error{
+display:none;
+margin-top:20px;
+padding:15px;
+background:#ffe8e8;
+color:#a00000;
+border-radius:7px;
+text-align:center;
+}
+
+/* NEW SEARCH */
+
+.new-search{
+display:none;
+margin-top:10px;
+background:#777;
+}
+
+.new-search:hover{
+background:#555;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+color:#777;
+font-size:13px;
+padding:30px 15px;
+}
+
 </style>
+
 </head>
+
 <body>
 
-<div class="status-container">
-  <h2>RapidTrust Loans Status Check</h2>
-  <input type="text" id="refNumber" placeholder="Enter your reference number">
-  <button onclick="checkStatus()">Check Status</button>
-  <div class="message" id="statusMessage"></div>
+<!-- HEADER -->
+
+<header>
+
+<div class="logo">
+    RapidTrust Loans
 </div>
 
-<script>
-  // Example applicants database
-  const applicants = {
-    "RT1001": "Pending Review",
-    "RT1002": "Approved",
-    "RT1003": "Rejected",
-    "RT1004": "Pending Review"
-  };
+<div class="menu-btn" onclick="openMenu()">
+    ☰
+</div>
 
-  function checkStatus() {
-    const ref = document.getElementById("refNumber").value.trim();
-    const statusMessage = document.getElementById("statusMessage");
+</header>
 
-    if(ref === "") {
-      statusMessage.textContent = "Please enter a reference number.";
-      statusMessage.className = "message error";
-      return;
+
+<!-- SIDE MENU -->
+
+<div class="side-menu" id="sideMenu">
+
+<div class="close-btn" onclick="closeMenu()">
+    ×
+</div>
+
+<a href="index.html">
+    Home
+</a>
+
+<a href="about.html">
+    About Us
+</a>
+
+<a href="faq.html">
+    FAQ
+</a>
+
+<a href="terms.html">
+    Terms & Conditions
+</a>
+
+<a href="privacy-policy.html">
+    Privacy Policy
+</a>
+
+<a href="contact.html">
+    Contact Us
+</a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+<div class="card">
+
+    <h1>
+        Check Loan Status
+    </h1>
+
+    <div class="intro">
+
+        Enter your RapidTrust reference number
+        or ID number below to check your application status.
+
+    </div>
+
+
+    <!-- SEARCH FORM -->
+
+    <form id="statusForm">
+
+        <label for="searchValue">
+            Reference Number or ID Number
+        </label>
+
+        <input
+            type="text"
+            id="searchValue"
+            placeholder="Example: RT-123456 or ID number"
+            required
+        >
+
+        <button type="submit" id="checkButton">
+            Check Status
+        </button>
+
+    </form>
+
+
+    <!-- ERROR -->
+
+    <div
+        class="error"
+        id="errorMessage"
+    >
+
+        Application not found.
+
+        <br><br>
+
+        Please check your reference number or ID number and try again.
+
+    </div>
+
+
+    <!-- RESULT -->
+
+    <div
+        class="result"
+        id="result"
+    >
+
+        <!-- STATUS -->
+
+        <div
+            class="status-box"
+            id="statusBox"
+        >
+
+            <span id="statusText"></span>
+
+        </div>
+
+
+        <!-- DETAILS -->
+
+        <div class="details">
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Reference Number
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="resultReference"
+                ></div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Application Status
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="resultStatus"
+                ></div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Application Date
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="resultDate"
+                ></div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Loan Amount Requested
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="resultAmount"
+                ></div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Repayment Term
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="resultTerm"
+                ></div>
+
+            </div>
+
+
+            <div class="detail-row">
+
+                <div class="detail-label">
+                    Estimated Monthly Instalment
+                </div>
+
+                <div
+                    class="detail-value"
+                    id="resultMonthly"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATUS MESSAGE -->
+
+        <div
+            class="message"
+            id="statusMessage"
+        ></div>
+
+
+        <!-- APPROVED ONLY -->
+
+        <div
+            id="bankingSection"
+            style="display:none;"
+        >
+
+            <a
+                href="#"
+                id="bankingLink"
+                class="bank-btn"
+            >
+
+                Continue to Banking Details
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- NEW SEARCH -->
+
+    <button
+        class="new-search"
+        id="newSearch"
+        onclick="resetSearch()"
+    >
+
+        Check Another Application
+
+    </button>
+
+</div>
+
+</div>
+
+
+<footer>
+
+© 2026 RapidTrust Loans. All rights reserved.
+
+</footer>
+
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+query,
+where,
+getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+apiKey:
+"AIzaSyBhgjdFik1KbvMEKHqcaPVijdsxRW8fPj4",
+
+authDomain:
+"rapidtrusts-loans.firebaseapp.com",
+
+projectId:
+"rapidtrusts-loans",
+
+storageBucket:
+"rapidtrusts-loans.firebasestorage.app",
+
+messagingSenderId:
+"964719688281",
+
+appId:
+"1:964719688281:web:a303d706dc45746b178f48"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getFirestore(app);
+
+
+/* SIDE MENU */
+
+window.openMenu = function(){
+
+document
+.getElementById("sideMenu")
+.classList
+.add("active");
+
+};
+
+
+window.closeMenu = function(){
+
+document
+.getElementById("sideMenu")
+.classList
+.remove("active");
+
+};
+
+
+/* CHECK STATUS */
+
+document
+.getElementById("statusForm")
+.addEventListener("submit", async function(e){
+
+e.preventDefault();
+
+
+const searchValue =
+    document
+    .getElementById("searchValue")
+    .value
+    .trim()
+    .toUpperCase();
+
+
+if(!searchValue){
+
+    return;
+
+}
+
+
+const result =
+    document.getElementById("result");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const newSearch =
+    document.getElementById("newSearch");
+
+const bankingSection =
+    document.getElementById("bankingSection");
+
+const bankingLink =
+    document.getElementById("bankingLink");
+
+const checkButton =
+    document.getElementById("checkButton");
+
+
+/* RESET */
+
+result.style.display = "none";
+
+errorMessage.style.display = "none";
+
+bankingSection.style.display = "none";
+
+newSearch.style.display = "none";
+
+
+/* BUTTON */
+
+checkButton.disabled = true;
+
+checkButton.textContent = "Checking...";
+
+
+try{
+
+    let application = null;
+
+
+    /*
+     * FIRST:
+     * SEARCH BY REFERENCE
+     */
+
+    const referenceQuery =
+        query(
+            collection(db,"applications"),
+            where("reference","==",searchValue)
+        );
+
+
+    const referenceSnapshot =
+        await getDocs(referenceQuery);
+
+
+    if(!referenceSnapshot.empty){
+
+        application =
+            referenceSnapshot.docs[0].data();
+
     }
 
-    const status = applicants[ref];
-    if(status) {
-      statusMessage.textContent = `Application Found – ${status}`;
-      if(status === "Pending Review") statusMessage.className = "message pending";
-      else if(status === "Approved") statusMessage.className = "message approved";
-      else if(status === "Rejected") statusMessage.className = "message rejected";
-    } else {
-      statusMessage.textContent = "Application Not Found – Please check your reference number";
-      statusMessage.className = "message error";
+
+    /*
+     * IF NOT FOUND:
+     * SEARCH BY ID NUMBER
+     */
+
+    if(!application){
+
+        const idQuery =
+            query(
+                collection(db,"applications"),
+                where("idNumber","==",searchValue)
+            );
+
+
+        const idSnapshot =
+            await getDocs(idQuery);
+
+
+        if(!idSnapshot.empty){
+
+            application =
+                idSnapshot.docs[0].data();
+
+        }
+
     }
-  }
+
+
+    /*
+     * NOT FOUND
+     */
+
+    if(!application){
+
+        errorMessage.style.display = "block";
+
+        newSearch.style.display = "block";
+
+        return;
+
+    }
+
+
+    /*
+     * SHOW RESULT
+     */
+
+    result.style.display = "block";
+
+    newSearch.style.display = "block";
+
+
+    /*
+     * REFERENCE
+     */
+
+    const applicationReference =
+        application.reference || "";
+
+    document
+    .getElementById("resultReference")
+    .textContent =
+        applicationReference || "N/A";
+
+
+    /*
+     * STATUS
+     */
+
+    const currentStatus =
+        application.status || "Pending";
+
+
+    document
+    .getElementById("resultStatus")
+    .textContent =
+        currentStatus;
+
+
+    /*
+     * DATE
+     */
+
+    let applicationDate =
+        "N/A";
+
+
+    if(application.applicationDate){
+
+        applicationDate =
+            application.applicationDate;
+
+    }
+
+    else if(application.createdAt){
+
+        if(
+            application.createdAt.toDate
+        ){
+
+            applicationDate =
+                application.createdAt
+                .toDate()
+                .toLocaleDateString(
+                    "en-ZA",
+                    {
+                        day:"2-digit",
+                        month:"long",
+                        year:"numeric"
+                    }
+                );
+
+        }
+
+    }
+
+
+    document
+    .getElementById("resultDate")
+    .textContent =
+        applicationDate;
+
+
+    /*
+     * LOAN AMOUNT
+     */
+
+    let amount =
+        application.loanAmount;
+
+
+    if(
+        amount !== undefined &&
+        amount !== null &&
+        amount !== ""
+    ){
+
+        amount =
+            "R" +
+            Number(amount)
+            .toLocaleString("en-ZA");
+
+    }
+
+    else{
+
+        amount = "N/A";
+
+    }
+
+
+    document
+    .getElementById("resultAmount")
+    .textContent =
+        amount;
+
+
+    /*
+     * REPAYMENT TERM
+     */
+
+    let term =
+        application.repaymentPeriod;
+
+
+    if(
+        term !== undefined &&
+        term !== null &&
+        term !== ""
+    ){
+
+        term =
+            term.toString()
+            .replace(
+                /Months?/i,
+                ""
+            )
+            .trim();
+
+        term =
+            term + " Months";
+
+    }
+
+    else{
+
+        term = "N/A";
+
+    }
+
+
+    document
+    .getElementById("resultTerm")
+    .textContent =
+        term;
+
+
+    /*
+     * MONTHLY INSTALMENT
+     */
+
+    let monthly =
+        application.monthlyInstalment;
+
+
+    if(
+        monthly !== undefined &&
+        monthly !== null &&
+        monthly !== ""
+    ){
+
+        monthly =
+            "R" +
+            Number(monthly)
+            .toLocaleString("en-ZA");
+
+    }
+
+    else{
+
+        monthly = "N/A";
+
+    }
+
+
+    document
+    .getElementById("resultMonthly")
+    .textContent =
+        monthly;
+
+
+    /*
+     * STATUS BOX
+     */
+
+    const statusBox =
+        document.getElementById("statusBox");
+
+    const statusText =
+        document.getElementById("statusText");
+
+    const statusMessage =
+        document.getElementById("statusMessage");
+
+
+    statusBox.className =
+        "status-box";
+
+
+    /*
+     * PENDING
+     */
+
+    if(currentStatus === "Pending"){
+
+        statusBox.classList
+        .add("pending");
+
+
+        statusText.textContent =
+            "Application Pending";
+
+
+        statusMessage.textContent =
+            "Your application has been received and is currently awaiting review. Please check your status regularly for updates.";
+
+    }
+
+
+    /*
+     * UNDER REVIEW
+     */
+
+    else if(
+        currentStatus === "Under Review"
+    ){
+
+        statusBox.classList
+        .add("review");
+
+
+        statusText.textContent =
+            "Application Under Review";
+
+
+        statusMessage.textContent =
+            "Your application is currently being assessed. Please check your status regularly for updates.";
+
+    }
+
+
+    /*
+     * APPROVED
+     */
+
+    else if(
+        currentStatus === "Approved"
+    ){
+
+        statusBox.classList
+        .add("approved");
+
+
+        statusText.textContent =
+            "Application Approved";
+
+
+        statusMessage.textContent =
+            "Congratulations! Your loan application has been approved. To proceed with the loan disbursement, please provide your banking details.";
+
+
+        /*
+         * SEND THE APPLICATION REFERENCE
+         * TO BANKING DETAILS PAGE
+         */
+
+        bankingLink.href =
+            "banking-details.html?reference=" +
+            encodeURIComponent(
+                applicationReference
+            );
+
+
+        bankingSection.style.display =
+            "block";
+
+    }
+
+
+    /*
+     * REJECTED
+     */
+
+    else if(
+        currentStatus === "Rejected"
+    ){
+
+        statusBox.classList
+        .add("rejected");
+
+
+        statusText.textContent =
+            "Application Rejected";
+
+
+        statusMessage.textContent =
+            "Unfortunately, your loan application was not approved. You may contact RapidTrust Loans if you require further information.";
+
+    }
+
+
+    /*
+     * UNKNOWN STATUS
+     */
+
+    else{
+
+        statusBox.classList
+        .add("review");
+
+
+        statusText.textContent =
+            currentStatus;
+
+
+        statusMessage.textContent =
+            "Your application status has been updated. Please check again regularly for further updates.";
+
+    }
+
+}
+
+catch(error){
+
+    console.error(error);
+
+
+    errorMessage.style.display =
+        "block";
+
+
+    errorMessage.innerHTML =
+        "Unable to check your application right now." +
+        "<br><br>" +
+        "Please try again later.";
+
+}
+
+finally{
+
+    checkButton.disabled = false;
+
+    checkButton.textContent =
+        "Check Status";
+
+}
+
+});
+
+
+/* RESET SEARCH */
+
+window.resetSearch = function(){
+
+document
+.getElementById("statusForm")
+.reset();
+
+
+document
+.getElementById("result")
+.style.display = "none";
+
+
+document
+.getElementById("errorMessage")
+.style.display = "none";
+
+
+document
+.getElementById("newSearch")
+.style.display = "none";
+
+
+document
+.getElementById("bankingSection")
+.style.display = "none";
+
+
+document
+.getElementById("searchValue")
+.focus();
+
+};
+
 </script>
 
 </body>
+
 </html>
+    
+                    
+
+
+                
+    
+                            
+
+            
+
+        
+
+
+        
+        
+
+            
+
+
+
