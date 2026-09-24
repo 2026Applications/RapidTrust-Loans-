@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Details - RapidTrust Loans</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f5f7fa;
+padding:20px;
+}
+
+.container{
+max-width:500px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h2{
+text-align:center;
+margin-bottom:15px;
+color:#003366;
+}
+
+.progress-text{
+text-align:center;
+font-size:14px;
+margin-bottom:10px;
+color:#555;
+}
+
+.progress-bar{
+width:100%;
+height:8px;
+background:#ddd;
+border-radius:20px;
+margin-bottom:20px;
+overflow:hidden;
+}
+
+.progress-fill{
+width:20%;
+height:100%;
+background:#007bff;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+font-weight:bold;
+}
+
+input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+font-size:16px;
+}
+
+.button-group{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+button{
+flex:1;
+padding:14px;
+border:none;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:disabled{
+opacity:0.6;
+cursor:not-allowed;
+}
+
+.back-btn{
+background:#6c757d;
+color:white;
+}
+
+.next-btn{
+background:#007bff;
+color:white;
+}
+
+.message{
+display:none;
+margin-top:20px;
+padding:15px;
+border-radius:8px;
+font-size:15px;
+line-height:1.5;
+}
+
+.error-message{
+background:#ffe5e5;
+color:#a00000;
+border:1px solid #ffb3b3;
+}
+
+.success-message{
+background:#e5f7e5;
+color:#176b17;
+border:1px solid #a8d8a8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Personal Details</h2>
+
+<div class="progress-text">1 of 5</div>
+
+<div class="progress-bar">
+<div class="progress-fill"></div>
+</div>
+
+<form id="personalForm">
+
+<label>Full Name</label>
+<input
+type="text"
+id="fullName"
+required
+placeholder="Enter full name"
+>
+
+<label>Surname</label>
+<input
+type="text"
+id="surname"
+required
+placeholder="Enter surname"
+>
+
+<label>ID Number</label>
+<input
+type="text"
+id="idNumber"
+required
+maxlength="13"
+placeholder="Enter ID number"
+>
+
+<label>Cellphone Number</label>
+<input
+type="tel"
+id="phone"
+required
+placeholder="Enter cellphone number"
+>
+
+<label>Email Address</label>
+<input
+type="email"
+id="email"
+required
+placeholder="Enter email address"
+>
+
+<label>Residential Address</label>
+<input
+type="text"
+id="address"
+required
+placeholder="Enter residential address"
+>
+
+<div
+id="message"
+class="message">
+</div>
+
+<div class="button-group">
+
+<button
+type="button"
+class="back-btn"
+onclick="window.location.href='index.html'">
+Back
+</button>
+
+<button
+type="submit"
+class="next-btn"
+id="nextButton">
+Next
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+
+<!-- Firebase -->
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+/* Firebase configuration */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyBhgjdFik1KbvMEKHqcaPVijdsxRW8fPj4",
+
+    authDomain: "rapidtrusts-loans.firebaseapp.com",
+
+    projectId: "rapidtrusts-loans",
+
+    storageBucket: "rapidtrusts-loans.firebasestorage.app",
+
+    messagingSenderId: "964719688281",
+
+    appId: "1:964719688281:web:a303d706dc45746b178f48"
+
+};
+
+
+/* Start Firebase */
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+
+/* Page elements */
+
+const form =
+    document.getElementById("personalForm");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+const message =
+    document.getElementById("message");
+
+
+/* Show message */
+
+function showMessage(text, type){
+
+    message.textContent = text;
+
+    message.className =
+        "message " + type;
+
+    message.style.display = "block";
+}
+
+
+/* Hide message */
+
+function hideMessage(){
+
+    message.style.display = "none";
+
+}
+
+
+/* Submit Page 1 */
+
+form.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    hideMessage();
+
+    nextButton.disabled = true;
+
+    nextButton.textContent = "Checking...";
+
+
+    try{
+
+        /* Get ID number */
+
+        const idNumber =
+            document
+            .getElementById("idNumber")
+            .value
+            .trim();
+
+
+        /* Check Firestore for this ID */
+
+        const applicationsRef =
+            collection(db, "applications");
+
+
+        const duplicateQuery =
+            query(
+                applicationsRef,
+                where("idNumber", "==", idNumber)
+            );
+
+
+        const duplicateSnapshot =
+            await getDocs(duplicateQuery);
+
+
+        /* Existing application found */
+
+        if(!duplicateSnapshot.empty){
+
+            const existingApplication =
+                duplicateSnapshot.docs[0].data();
+
+
+            const existingReference =
+                existingApplication.reference ||
+                "Not available";
+
+
+            showMessage(
+                "Application Already Exists.\n\n" +
+                "An application with this ID number " +
+                "already exists.\n\n" +
+                "Reference Number: " +
+                existingReference +
+                "\n\n" +
+                "Please use your reference number " +
+                "or ID number to check your application status.",
+                "error-message"
+            );
+
+
+            nextButton.disabled = false;
+
+            nextButton.textContent = "Next";
+
+            return;
+
+        }
+
+
+        /* No duplicate found */
+
+        const applicant = {
+
+            fullName:
+                document
+                .getElementById("fullName")
+                .value
+                .trim(),
+
+            surname:
+                document
+                .getElementById("surname")
+                .value
+                .trim(),
+
+            idNumber:
+                idNumber,
+
+            cellphone:
+                document
+                .getElementById("phone")
+                .value
+                .trim(),
+
+            email:
+                document
+                .getElementById("email")
+                .value
+                .trim(),
+
+            address:
+                document
+                .getElementById("address")
+                .value
+                .trim()
+
+        };
+
+
+        /* Save current application locally */
+
+        localStorage.setItem(
+            "loanApplicant",
+            JSON.stringify(applicant)
+        );
+
+
+        /* Continue to Page 2 */
+
+        window.location.href =
+            "income-details.html";
+
+
+    }catch(error){
+
+        console.error(
+            "Duplicate check error:",
+            error
+        );
+
+
+        showMessage(
+            "We could not verify your ID number. " +
+            "Please check your internet connection " +
+            "and try again.",
+            "error-message"
+        );
+
+
+        nextButton.disabled = false;
+
+        nextButton.textContent = "Next";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
