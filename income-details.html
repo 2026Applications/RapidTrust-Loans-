@@ -85,6 +85,10 @@ border-radius:8px;
 cursor:pointer;
 }
 
+button:disabled{
+opacity:0.6;
+}
+
 .back-btn{
 background:#6c757d;
 color:white;
@@ -96,6 +100,7 @@ color:white;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -111,33 +116,62 @@ color:white;
 <form id="incomeForm">
 
 <label>Employment Type</label>
+
 <select id="employmentType" required>
 <option value="">Select</option>
-<option>Permanent</option>
-<option>Contract</option>
-<option>Self-employed</option>
-<option>Unemployed</option>
+<option value="Permanent">Permanent</option>
+<option value="Contract">Contract</option>
+<option value="Self-employed">Self-employed</option>
+<option value="Unemployed">Unemployed</option>
 </select>
 
 <label>Monthly Income</label>
-<input type="number" id="monthlyIncome" required placeholder="Enter monthly income">
+
+<input
+type="number"
+id="monthlyIncome"
+required
+placeholder="Enter monthly income"
+min="0"
+>
 
 <label>Payday</label>
+
 <select id="payday" required>
 <option value="">Select Payday</option>
-<option>15th</option>
-<option>20th</option>
-<option>25th</option>
-<option>30th</option>
-<option>31st</option>
+<option value="15th">15th</option>
+<option value="20th">20th</option>
+<option value="25th">25th</option>
+<option value="30th">30th</option>
+<option value="31st">31st</option>
 </select>
 
 <label>Monthly Expenses</label>
-<input type="number" id="expenses" required placeholder="Enter monthly expenses">
+
+<input
+type="number"
+id="expenses"
+required
+placeholder="Enter monthly expenses"
+min="0"
+>
 
 <div class="button-group">
-<button type="button" class="back-btn" onclick="window.location.href='personal-details.html'">Back</button>
-<button type="submit" class="next-btn">Next</button>
+
+<button
+type="button"
+class="back-btn"
+onclick="window.location.href='personal-details.html'">
+Back
+</button>
+
+<button
+type="submit"
+class="next-btn"
+id="nextButton">
+Next
+</button>
+
 </div>
 
 </form>
@@ -145,21 +179,108 @@ color:white;
 </div>
 
 <script>
-document.getElementById("incomeForm").addEventListener("submit", function(e){
-e.preventDefault();
 
-const applicant = JSON.parse(localStorage.getItem("loanApplicant")) || {};
+const form =
+    document.getElementById("incomeForm");
 
-applicant.employmentType = document.getElementById("employmentType").value;
-applicant.monthlyIncome = document.getElementById("monthlyIncome").value;
-applicant.payday = document.getElementById("payday").value;
-applicant.expenses = document.getElementById("expenses").value;
+const nextButton =
+    document.getElementById("nextButton");
 
-localStorage.setItem("loanApplicant", JSON.stringify(applicant));
 
-window.location.href = "loan-request.html";
+form.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+
+    /* CHECK PAGE 1 DATA */
+
+    const savedData =
+        localStorage.getItem("loanApplicant");
+
+
+    if(!savedData){
+
+        alert(
+            "Please complete Page 1 first."
+        );
+
+        window.location.href =
+            "personal-details.html";
+
+        return;
+    }
+
+
+    try{
+
+        const applicant =
+            JSON.parse(savedData);
+
+
+        /* SAVE INCOME DETAILS */
+
+        applicant.employmentType =
+            document.getElementById(
+                "employmentType"
+            ).value;
+
+
+        applicant.monthlyIncome =
+            document.getElementById(
+                "monthlyIncome"
+            ).value;
+
+
+        applicant.payday =
+            document.getElementById(
+                "payday"
+            ).value;
+
+
+        applicant.monthlyExpenses =
+            document.getElementById(
+                "expenses"
+            ).value;
+
+
+        /* SAVE EVERYTHING */
+
+        localStorage.setItem(
+            "loanApplicant",
+            JSON.stringify(applicant)
+        );
+
+
+        /* GO TO PAGE 3 */
+
+        window.location.href =
+            "./loan-request.html";
+
+
+    }catch(error){
+
+        console.error(
+            "Income page error:",
+            error
+        );
+
+
+        alert(
+            "Unable to continue. Please try again."
+        );
+
+
+        nextButton.disabled = false;
+
+        nextButton.textContent =
+            "Next";
+
+    }
+
 });
+
 </script>
 
 </body>
 </html>
+        
