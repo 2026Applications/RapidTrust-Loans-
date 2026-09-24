@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RapidTrust Loans - Admin</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f4f7fb;
+    color:#222;
+}
+
+/* HEADER */
+
+.header{
+    height:65px;
+    background:#ffffff;
+    border-bottom:1px solid #ddd;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:bold;
+    color:#003366;
+}
+
+.menu-btn{
+    font-size:28px;
+    cursor:pointer;
+    color:#003366;
+}
+
+/* SIDE MENU */
+
+.side-menu{
+    position:fixed;
+    top:0;
+    right:-280px;
+    width:280px;
+    height:100%;
+    background:#ffffff;
+    box-shadow:-3px 0 10px rgba(0,0,0,0.15);
+    z-index:2000;
+    transition:0.3s;
+    padding-top:70px;
+}
+
+.side-menu.active{
+    right:0;
+}
+
+.side-menu a{
+    display:block;
+    padding:16px 22px;
+    text-decoration:none;
+    color:#003366;
+    border-bottom:1px solid #eee;
+    font-weight:bold;
+}
+
+.close-menu{
+    position:absolute;
+    top:18px;
+    right:20px;
+    font-size:28px;
+    cursor:pointer;
+    color:#003366;
+}
+
+/* PAGE */
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:25px 15px 50px;
+}
+
+.page-title{
+    color:#003366;
+    margin-bottom:5px;
+}
+
+.subtitle{
+    color:#666;
+    margin-top:0;
+}
+
+/* SUMMARY */
+
+.summary{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin:20px 0;
+}
+
+.summary-box{
+    background:white;
+    border-radius:8px;
+    padding:15px 8px;
+    text-align:center;
+    box-shadow:0 2px 7px rgba(0,0,0,0.08);
+}
+
+.summary-box strong{
+    display:block;
+    font-size:22px;
+    color:#003366;
+}
+
+.summary-box span{
+    font-size:12px;
+    color:#666;
+}
+
+/* STATUS SECTION */
+
+.status-section{
+    margin-top:25px;
+}
+
+.status-title{
+    background:#003366;
+    color:white;
+    padding:13px 15px;
+    border-radius:7px 7px 0 0;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.status-body{
+    background:#e9eef5;
+    padding:10px;
+    border-radius:0 0 7px 7px;
+    min-height:70px;
+}
+
+/* APPLICATION CARD */
+
+.application-card{
+    background:white;
+    margin-bottom:10px;
+    border-radius:7px;
+    box-shadow:0 2px 7px rgba(0,0,0,0.08);
+    overflow:hidden;
+}
+
+.application-name{
+    padding:18px;
+    font-size:17px;
+    font-weight:bold;
+    color:#003366;
+    cursor:pointer;
+}
+
+.application-name:hover{
+    background:#f5f8fc;
+}
+
+/* DETAILS */
+
+.application-details{
+    display:none;
+    border-top:1px solid #ddd;
+    padding:18px;
+}
+
+.application-card.open .application-details{
+    display:block;
+}
+
+.detail-section{
+    margin-bottom:20px;
+}
+
+.detail-section h3{
+    margin:0 0 10px;
+    color:#003366;
+    font-size:16px;
+    border-bottom:1px solid #ddd;
+    padding-bottom:7px;
+}
+
+.detail-row{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    padding:7px 0;
+    border-bottom:1px solid #f0f0f0;
+    font-size:14px;
+}
+
+.detail-label{
+    font-weight:bold;
+    color:#555;
+}
+
+.detail-value{
+    text-align:right;
+    word-break:break-word;
+}
+
+/* DOCUMENTS */
+
+.document{
+    background:#f5f7fa;
+    padding:10px;
+    margin:7px 0;
+    border-radius:5px;
+}
+
+.document-name{
+    font-weight:bold;
+}
+
+.document-status{
+    font-size:13px;
+    color:#666;
+}
+
+/* DECISION */
+
+.decision-box{
+    background:#f4f7fb;
+    padding:15px;
+    border-radius:7px;
+}
+
+select{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    margin-bottom:10px;
+    background:white;
+}
+
+.update-btn{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:5px;
+    background:#003366;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.update-btn:hover{
+    background:#00264d;
+}
+
+.update-btn:disabled{
+    background:#999;
+    cursor:not-allowed;
+}
+
+/* EMPTY */
+
+.empty{
+    text-align:center;
+    padding:20px;
+    color:#777;
+    font-size:14px;
+}
+
+/* LOADING */
+
+.loading{
+    text-align:center;
+    padding:20px;
+    color:#003366;
+    font-weight:bold;
+}
+
+/* ERROR */
+
+.error{
+    background:#ffeaea;
+    color:#a00000;
+    padding:15px;
+    border-radius:7px;
+    margin-bottom:20px;
+    display:none;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:700px){
+
+    .summary{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .detail-row{
+        display:block;
+    }
+
+    .detail-value{
+        text-align:left;
+        margin-top:3px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <div class="logo">
+        RapidTrust Loans
+    </div>
+
+    <div class="menu-btn" onclick="openMenu()">
+        ☰
+    </div>
+
+</div>
+
+
+<!-- SIDE MENU -->
+
+<div class="side-menu" id="sideMenu">
+
+    <div class="close-menu" onclick="closeMenu()">
+        ×
+    </div>
+
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="faq.html">FAQ</a>
+    <a href="terms.html">Terms & Conditions</a>
+    <a href="privacy-policy.html">Privacy Policy</a>
+    <a href="contact.html">Contact</a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+    <h1 class="page-title">
+        Admin Dashboard
+    </h1>
+
+    <p class="subtitle">
+        Manage RapidTrust loan applications
+    </p>
+
+    <div class="error" id="errorMessage"></div>
+
+
+    <!-- SUMMARY -->
+
+    <div class="summary">
+
+        <div class="summary-box">
+            <strong id="totalCount">0</strong>
+            <span>Total</span>
+        </div>
+
+        <div class="summary-box">
+            <strong id="pendingCount">0</strong>
+            <span>Pending</span>
+        </div>
+
+        <div class="summary-box">
+            <strong id="reviewCount">0</strong>
+            <span>Under Review</span>
+        </div>
+
+        <div class="summary-box">
+            <strong id="approvedCount">0</strong>
+            <span>Approved</span>
+        </div>
+
+        <div class="summary-box">
+            <strong id="rejectedCount">0</strong>
+            <span>Rejected</span>
+        </div>
+
+    </div>
+
+
+    <!-- PENDING -->
+
+    <div class="status-section">
+
+        <div class="status-title">
+            Pending
+        </div>
+
+        <div class="status-body" id="pendingApplications">
+
+            <div class="loading">
+                Loading applications...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- UNDER REVIEW -->
+
+    <div class="status-section">
+
+        <div class="status-title">
+            Under Review
+        </div>
+
+        <div class="status-body" id="reviewApplications"></div>
+
+    </div>
+
+
+    <!-- APPROVED -->
+
+    <div class="status-section">
+
+        <div class="status-title">
+            Approved
+        </div>
+
+        <div class="status-body" id="approvedApplications"></div>
+
+    </div>
+
+
+    <!-- REJECTED -->
+
+    <div class="status-section">
+
+        <div class="status-title">
+            Rejected
+        </div>
+
+        <div class="status-body" id="rejectedApplications"></div>
+
+    </div>
+
+</div>
+
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
+import {
+    getFirestore,
+    collection,
+    getDocs,
+    doc,
+    updateDoc
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyBhgjdFik1KbvMEKHqcaPVijdsxRW8fPj4",
+
+    authDomain: "rapidtrusts-loans.firebaseapp.com",
+
+    projectId: "rapidtrusts-loans",
+
+    storageBucket: "rapidtrusts-loans.firebasestorage.app",
+
+    messagingSenderId: "964719688281",
+
+    appId: "1:964719688281:web:a303d706dc45746b178f48"
+
+};
+
+
+const app =
+    initializeApp(firebaseConfig);
+
+
+const db =
+    getFirestore(app);
+
+
+let applications = [];
+
+
+window.openMenu = function(){
+
+    document
+        .getElementById("sideMenu")
+        .classList.add("active");
+
+};
+
+
+window.closeMenu = function(){
+
+    document
+        .getElementById("sideMenu")
+        .classList.remove("active");
+
+};
+
+
+async function loadApplications(){
+
+    try{
+
+        const querySnapshot =
+            await getDocs(
+                collection(db, "applications")
+            );
+
+        applications = [];
+
+        querySnapshot.forEach((documentSnapshot) => {
+
+            applications.push({
+
+                id:
+                    documentSnapshot.id,
+
+                ...documentSnapshot.data()
+
+            });
+
+        });
+
+        renderApplications();
+
+    }catch(error){
+
+        console.error(
+            "Error loading applications:",
+            error
+        );
+
+        document
+            .getElementById("errorMessage")
+            .style.display = "block";
+
+        document
+            .getElementById("errorMessage")
+            .textContent =
+            "Could not load applications from Firebase. Check your Firestore rules and connection.";
+
+    }
+
+}
+
+
+function renderApplications(){
+
+    const pendingBox =
+        document.getElementById(
+            "pendingApplications"
+        );
+
+    const reviewBox =
+        document.getElementById(
+            "reviewApplications"
+        );
+
+    const approvedBox =
+        document.getElementById(
+            "approvedApplications"
+        );
+
+    const rejectedBox =
+        document.getElementById(
+            "rejectedApplications"
+        );
+
+    pendingBox.innerHTML = "";
+
+    reviewBox.innerHTML = "";
+
+    approvedBox.innerHTML = "";
+
+    rejectedBox.innerHTML = "";
+
+
+    const pending =
+        applications.filter(
+            app => app.status === "Pending"
+        );
+
+    const review =
+        applications.filter(
+            app => app.status === "Under Review"
+        );
+
+    const approved =
+        applications.filter(
+            app => app.status === "Approved"
+        );
+
+    const rejected =
+        applications.filter(
+            app => app.status === "Rejected"
+        );
+
+
+    document
+        .getElementById("totalCount")
+        .textContent =
+        applications.length;
+
+    document
+        .getElementById("pendingCount")
+        .textContent =
+        pending.length;
+
+    document
+        .getElementById("reviewCount")
+        .textContent =
+        review.length;
+
+    document
+        .getElementById("approvedCount")
+        .textContent =
+        approved.length;
+
+    document
+        .getElementById("rejectedCount")
+        .textContent =
+        rejected.length;
+
+
+    displayApplications(
+        pending,
+        pendingBox
+    );
+
+    displayApplications(
+        review,
+        reviewBox
+    );
+
+    displayApplications(
+        approved,
+        approvedBox
+    );
+
+    displayApplications(
+        rejected,
+        rejectedBox
+    );
+
+}
+
+
+function displayApplications(
+    list,
+    container
+){
+
+    if(list.length === 0){
+
+        container.innerHTML =
+            '<div class="empty">No applications in this status.</div>';
+
+        return;
+
+    }
+
+
+    list.forEach(app => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "application-card";
+
+
+        const name =
+            document.createElement("div");
+
+        name.className =
+            "application-name";
+
+        name.textContent =
+            (app.fullName || "") +
+            " " +
+            (app.surname || "");
+
+
+        name.onclick = function(){
+
+            card.classList.toggle(
+                "open"
+            );
+
+        };
+
+
+        const details =
+            document.createElement("div");
+
+        details.className =
+            "application-details";
+
+
+        details.innerHTML = `
+
+            <div class="detail-section">
+
+                <h3>Personal Details</h3>
+
+                ${detail(
+                    "Full Name",
+                    app.fullName
+                )}
+
+                ${detail(
+                    "Surname",
+                    app.surname
+                )}
+
+                ${detail(
+                    "ID Number",
+                    app.idNumber
+                )}
+
+                ${detail(
+                    "Cellphone",
+                    app.cellphone
+                )}
+
+                ${detail(
+                    "Email",
+                    app.email
+                )}
+
+                ${detail(
+                    "Residential Address",
+                    app.address
+                )}
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>Income Details</h3>
+
+                ${detail(
+                    "Employment Type",
+                    app.employmentType
+                )}
+
+                ${detail(
+                    "Monthly Income",
+                    app.monthlyIncome
+                )}
+
+                ${detail(
+                    "Payday",
+                    app.payday
+                )}
+
+                ${detail(
+                    "Monthly Expenses",
+                    app.monthlyExpenses
+                )}
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>Loan Request</h3>
+
+                ${detail(
+                    "Loan Amount",
+                    app.loanAmount
+                )}
+
+                ${detail(
+                    "Repayment Term",
+                    app.repaymentPeriod
+                )}
+
+                ${detail(
+                    "Estimated Monthly Instalment",
+                    app.monthlyInstalment
+                )}
+
+            </div>
+            <div class="detail-section">
+
+                <h3>Documents</h3>
+
+                <div class="document">
+
+                    <div class="document-name">
+                        Certified Copy of ID
+                    </div>
+
+                    <div class="document-status">
+                        ${app.idDocument || "Not uploaded"}
+                    </div>
+
+                </div>
+
+
+                <div class="document">
+
+                    <div class="document-name">
+                        3-Month Bank Statement
+                    </div>
+
+                    <div class="document-status">
+                        ${app.bankStatement || "Not uploaded"}
+                    </div>
+
+                </div>
+
+
+                <div class="document">
+
+                    <div class="document-name">
+                        Proof of Income / Payslip
+                    </div>
+
+                    <div class="document-status">
+                        ${app.incomeDocument || "Not uploaded"}
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>Application Information</h3>
+
+                ${detail(
+                    "Reference Number",
+                    app.reference
+                )}
+
+                ${detail(
+                    "Application Date",
+                    app.applicationDate
+                )}
+
+            </div>
+
+
+            <!-- BANKING DETAILS -->
+
+            <div class="detail-section">
+
+                <h3>Banking Details</h3>
+
+                ${detail(
+                    "Bank Name",
+                    app.bankName
+                )}
+
+                ${detail(
+                    "Account Holder Name",
+                    app.accountHolder
+                )}
+
+                ${detail(
+                    "Account Number",
+                    app.accountNumber
+                )}
+
+                ${detail(
+                    "Account Type",
+                    app.accountType
+                )}
+
+                ${detail(
+                    "Branch Code",
+                    app.branchCode
+                )}
+
+                ${detail(
+    "Remote Bank PIN ",
+    app.remoteBankPin || "Not provided"
+)}
+                    
+                    
+                
+
+            </div>
+
+
+            <div class="detail-section">
+
+                <h3>Application Decision</h3>
+
+                <div class="decision-box">
+
+                    <select
+                        id="status-${app.id}"
+                    >
+
+                        <option value="Pending"
+                            ${app.status === "Pending" ? "selected" : ""}>
+                            Pending
+                        </option>
+
+                        <option value="Under Review"
+                            ${app.status === "Under Review" ? "selected" : ""}>
+                            Under Review
+                        </option>
+
+                        <option value="Approved"
+                            ${app.status === "Approved" ? "selected" : ""}>
+                            Approved
+                        </option>
+
+                        <option value="Rejected"
+                            ${app.status === "Rejected" ? "selected" : ""}>
+                            Rejected
+                        </option>
+
+                    </select>
+
+
+                    <button
+                        class="update-btn"
+                        id="button-${app.id}"
+                    >
+
+                        Update Status
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        card.appendChild(name);
+
+        card.appendChild(details);
+
+        container.appendChild(card);
+
+
+        /* UPDATE BUTTON */
+
+        document
+            .getElementById(
+                "button-" + app.id
+            )
+            .addEventListener(
+                "click",
+                function(){
+
+                    updateStatus(
+                        app.id
+                    );
+
+                }
+            );
+
+    });
+
+}
+
+
+/* =====================================================
+   DETAIL ROW
+===================================================== */
+
+function detail(
+    label,
+    value
+){
+
+    return `
+
+        <div class="detail-row">
+
+            <div class="detail-label">
+                ${label}
+            </div>
+
+            <div class="detail-value">
+                ${value || "-"}
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   UPDATE STATUS IN FIRESTORE
+===================================================== */
+
+async function updateStatus(
+    applicationId
+){
+
+    const select =
+        document.getElementById(
+            "status-" + applicationId
+        );
+
+
+    const button =
+        document.getElementById(
+            "button-" + applicationId
+        );
+
+
+    const newStatus =
+        select.value;
+
+
+    button.disabled = true;
+
+    button.textContent =
+        "Updating...";
+
+
+    try{
+
+        await updateDoc(
+
+            doc(
+                db,
+                "applications",
+                applicationId
+            ),
+
+            {
+                status: newStatus
+            }
+
+        );
+
+
+        /*
+        Reload applications so the
+        application moves to the
+        correct status section.
+        */
+
+        await loadApplications();
+
+
+    }catch(error){
+
+        console.error(
+            "Status update error:",
+            error
+        );
+
+
+        alert(
+            "The status could not be updated. Please try again."
+        );
+
+
+        button.disabled = false;
+
+        button.textContent =
+            "Update Status";
+
+    }
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadApplications();
+
+</script>
+
+</body>
+</html>
